@@ -10,6 +10,7 @@ import {environment} from '../environments/environment';
 import {HttpClientModule} from '@angular/common/http';
 import {EffectsModule} from '@ngrx/effects';
 import {RegisterEffect} from './auth/store/effects/register.effect';
+import {TopBarModule} from './shared/modules/topBar/topBar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import {RegisterEffect} from './auth/store/effects/register.effect';
     BrowserModule, AppRoutingModule, AuthModule,
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
+    TopBarModule,
     HttpClientModule,
     EffectsModule.forRoot([]),
   ],
