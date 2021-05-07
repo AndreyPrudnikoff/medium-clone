@@ -7,22 +7,33 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {AuthModule} from './auth/auth.module';
 import {environment} from '../environments/environment';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {EffectsModule} from '@ngrx/effects';
 import {RegisterEffect} from './auth/store/effects/register.effect';
 import {TopBarModule} from './shared/modules/topBar/topBar.module';
+import {FormsModule} from '@angular/forms';
+import {PersistanceService} from './shared/services/persistance.service';
+import {AuthInterceptor} from './shared/services/authInterceptor.service';
+import {GlobalFeedModule} from './globalFeed/globalFeed.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule, AppRoutingModule, AuthModule,
+    GlobalFeedModule,
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production}),
     TopBarModule,
     HttpClientModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([]), FormsModule,
   ],
-  providers: [],
+  providers: [PersistanceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {
